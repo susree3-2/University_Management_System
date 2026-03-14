@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+body{font-family:Arial;background:#f4f6f9;margin:0;}
+
+.header{
+background:#1abc9c;
+color:white;
+padding:15px;
+}
+
+.container{display:flex;}
+
+.menu{
+width:200px;
+background:white;
+padding:20px;
+height:100vh;
+}
+
+.menu a{
+display:block;
+margin:10px 0;
+text-decoration:none;
+color:#333;
+}
+
+.content{
+flex:1;
+padding:30px;
+}
+
+.notifications{
+width:320px;
+background:white;
+padding:20px;
+}
+
+.alert{
+background:#d1ecf1;
+padding:10px;
+margin:10px 0;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h2>Admin Dashboard</h2>
+</div>
+
+<div class="container">
+
+<div class="menu">
+<h3>Menu</h3>
+<a href="#">Add Course</a>
+<a href="#">Allocate Classroom</a>
+<a href="#">View Conflicts</a>
+<a href="#">System Reports</a>
+<a href="#">Logout</a>
+</div>
+
+<div class="content">
+
+<h3>System Overview</h3>
+
+<ul>
+<li>Total Students: 1200</li>
+<li>Total Courses: 85</li>
+<li>Active Classrooms: 40</li>
+</ul>
+
+</div>
+
+<div class="notifications">
+
+<h3>Agent Activity</h3>
+
+<div class="alert">
+🤖 Scheduler Agent: Exam schedule generated.
+</div>
+
+<div class="alert">
+🏫 Resource Agent: Room B203 allocated.
+</div>
+
+<div class="alert">
+⚠ Risk Agent: Schedule conflict detected.
+</div>
+
+<div class="alert">
+💡 Advisor Agent: Suggest opening new section for CSE327.
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
