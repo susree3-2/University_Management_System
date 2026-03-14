@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Intelligent University Management System</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    padding:40px;
+    width:350px;
+    text-align:center;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+p{
+    color:gray;
+    font-size:14px;
+}
+
+.login-btn{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.google{
+    background:#db4437;
+    color:white;
+}
+
+.facebook{
+    background:#1877f2;
+    color:white;
+}
+
+.google:hover{
+    background:#c23321;
+}
+
+.facebook:hover{
+    background:#0f63d1;
+}
+
+.footer{
+    margin-top:20px;
+    font-size:12px;
+    color:gray;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Intelligent University Management System</h1>
+<p>Sign in</p>
+
+<button class="login-btn google" onclick="googleLogin()">
+Login with Google
+</button>
+
+<button class="login-btn facebook" onclick="facebookLogin()">
+Login with Facebook
+</button>
+
+<div class="footer">
+Federated Authentication using OAuth 2.0
+</div>
+
+</div>
+
+<script>
+
+function googleLogin(){
+    alert("Prototype: Google OAuth login will be implemented in backend.");
+}
+
+function facebookLogin(){
+    alert("Prototype: Facebook OAuth login will be implemented in backend.");
+}
+
+</script>
+
+</body>
+</html>
