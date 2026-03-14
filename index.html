@@ -1,108 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Management System | Login</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url(background_image.jpg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+        }
 
-<title>Intelligent University Management System</title>
+        .container {
+            background: white;
+            padding: 50px 40px;
+            width: 360px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
 
-<style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f4f6f9;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
+        h1 {
+            font-size: 22px;
+            color: #1a73e8; /* University/Google Blue */
+            margin-bottom: 8px;
+        }
 
-.container{
-    background:white;
-    padding:40px;
-    width:350px;
-    text-align:center;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
+        .subtitle {
+            color: #5f6368;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
 
-h1{
-    font-size:20px;
-    margin-bottom:10px;
-}
+        /* The Google Login Button */
+        .google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
 
-p{
-    color:gray;
-    font-size:14px;
-}
+        .google-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #d2d4d7;
+            box-shadow: 0 1px 3px rgba(60,64,67, 0.3);
+        }
 
-.login-btn{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    font-size:14px;
-}
+        /* Google Logo Styling */
+        .google-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px; /* Space between logo and text */
+        }
 
-.google{
-    background:#db4437;
-    color:white;
-}
-
-.facebook{
-    background:#1877f2;
-    color:white;
-}
-
-.google:hover{
-    background:#c23321;
-}
-
-.facebook:hover{
-    background:#0f63d1;
-}
-
-.footer{
-    margin-top:20px;
-    font-size:12px;
-    color:gray;
-}
-</style>
-
+        .footer {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #9aa0a6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
+    <h1>University Portal</h1>
+    <p class="subtitle">Secure Sign-in for Students & Staff</p>
 
-<h1>Intelligent University Management System</h1>
-<p>Sign in</p>
+    <button class="google-btn" onclick="googleLogin()">
+        <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo">
+        Sign in with Google
+    </button>
 
-<button class="login-btn google" onclick="googleLogin()">
-Login with Google
-</button>
-
-<button class="login-btn facebook" onclick="facebookLogin()">
-Login with Facebook
-</button>
-
-<div class="footer">
-Federated Authentication using OAuth 2.0
-</div>
-
+    <div class="footer">
+        Institutional Federated Identity
+    </div>
 </div>
 
 <script>
+function googleLogin() {
+    // This URL goes directly to the "Enter your email" screen
+    // It does not require a Client ID because it's a general service login
+    const targetUrl = "https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin";
 
-function googleLogin(){
-    alert("Prototype: Google OAuth login will be implemented in backend.");
+    // This command moves the page immediately
+    window.location.href = targetUrl;
 }
-
-function facebookLogin(){
-    alert("Prototype: Facebook OAuth login will be implemented in backend.");
-}
-
 </script>
 
 </body>
