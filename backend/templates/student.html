@@ -96,19 +96,14 @@ th,td{
 <th>Action</th>
 </tr>
 
+{% for course in courses %}
 <tr>
-<td>CSE327</td>
-<td>10:00 AM</td>
-<td>Full</td>
-<td><button>Enroll</button></td>
+    <td>{{ course.name }}</td>
+    <td>--</td>
+    <td>{{ course.students }}</td>
+    <td><button>Enroll</button></td>
 </tr>
-
-<tr>
-<td>CSE303</td>
-<td>1:00 PM</td>
-<td>5</td>
-<td><button>Enroll</button></td>
-</tr>
+{% endfor %}
 
 </table>
 
