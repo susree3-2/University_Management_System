@@ -76,6 +76,20 @@ margin:10px 0;
 <li>Active Classrooms: 40</li>
 </ul>
 
+<h3>Generated Schedule</h3>
+
+{% if generated_schedule %}
+    {% for item in generated_schedule %}
+        <div class="alert">
+            📅 {{ item }}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert">
+        No schedule generated
+    </div>
+{% endif %}
+
 </div>
 
 <div class="notifications">

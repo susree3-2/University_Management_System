@@ -44,3 +44,39 @@ class SchedulerAgent:
 
         # Remove duplicate messages
         return list(set(conflicts))
+    
+    def generate_schedule(self, courses, rooms, timeslots):
+        """
+    Generate schedule for courses
+
+    Logic:
+    - Assign each course a room and timeslot
+    - Avoid conflicts
+    - Respect room capacity
+    """
+        generated = []
+        for course in courses:
+            assigned = False
+            for timeslot in timeslots:
+                for room in rooms:
+                    # Check capacity
+                    if room.capacity >= course.students:
+                        conflict = False
+                        # Check if room already booked
+                        for s in self.schedules:
+                            if s.room == room and s.timeslot == timeslot:
+                                conflict = True
+                                break
+                            if not conflict:
+                                generated.append(
+                                    f"{course.name} scheduled in {room.name} at {timeslot}"
+                                )
+                                assigned = True
+                                break
+                if assigned:
+                    break
+            if not assigned:
+                generated.append(
+                    f"Could not schedule {course.name}"
+                )
+        return generated

@@ -1,4 +1,3 @@
-# core/agents/resource_agent.py
 
 class ResourceAllocationAgent:
     """
@@ -23,11 +22,18 @@ class ResourceAllocationAgent:
 
     def assign_rooms(self):
         """
-        Assign best available room to each course
-        """
+     Assign rooms to existing schedules
+
+    Logic:
+    - For each schedule, find best room
+    - Match capacity
+    - Avoid double booking
+    """
         allocations = []
 
-        for course in self.courses:
+        for schedule in self.schedules:
+            course = schedule.course
+            timeslot = schedule.timeslot
 
             best_room = None
 
@@ -36,24 +42,22 @@ class ResourceAllocationAgent:
                 # Check capacity condition
                 if room.capacity >= course.students:
 
-                    # Check availability (avoid conflict)
-                    # NOTE: here we assume same timeslot for simplicity
-                    # later we can improve this
-                    timeslot = self.schedules.first().timeslot if self.schedules.exists() else None
-
-                    if timeslot and self.is_room_available(room, timeslot):
-
-                        # Choose smallest suitable room (optimization)
+                    # REQ-11: avoid double booking
+                    is_available = True
+                    for s in self.schedules:
+                        if s.room == room and s.timeslot == timeslot and s.id != schedule.id:
+                            is_available = False
+                            break
+                    if is_available:
+                        # choose smallest suitable room (optimization)
                         if not best_room or room.capacity < best_room.capacity:
                             best_room = room
-
             if best_room:
                 allocations.append(
-                    f"{course.name} → {best_room.name} (Capacity: {best_room.capacity})"
-                )
+                f"{course.name} → {best_room.name} at {timeslot}"
+            )
             else:
                 allocations.append(
-                    f"No available room for {course.name}"
-                )
-
+                f"No suitable room for {course.name} at {timeslot}"
+            )
         return allocations
