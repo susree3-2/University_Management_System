@@ -43,16 +43,17 @@ class RiskDetectorAgent:
                 s for s in self.schedules if s.course in student_courses
             ]
 
-            for s1 in student_schedules:
-                for s2 in student_schedules:
+            for i in range(len(student_schedules)):
+              for j in range(i + 1, len(student_schedules)):
 
-                    if s1.id == s2.id:
-                        continue
+                s1 = student_schedules[i]
+                s2 = student_schedules[j]
 
-                    if s1.timeslot == s2.timeslot:
-                        risks.append(
-                            f"{student.name} has a conflict between {s1.course} and {s2.course}"
-                        )
+                # Check same timeslot
+                if s1.timeslot == s2.timeslot:
+                  risks.append(
+                    f"{student.name} has a conflict between {s1.course} and {s2.course}"
+                  )
 
         return list(set(risks))
 
