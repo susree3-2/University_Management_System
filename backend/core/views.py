@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .models import Course, Room, Schedule, TimeSlot
-from .agents.scheduler import SchedulerAgent   # import the agent
+from .models import Course, Room, Schedule, TimeSlot,Student, Enrollment
+from .agents.scheduler import SchedulerAgent                     # import the agent
 from .agents.resource_agent import ResourceAllocationAgent
+from .agents.risk_agent import RiskDetectorAgent
 
 
 def index(request):
@@ -20,6 +21,8 @@ def admin_dashboard(request):
     courses = Course.objects.all()
     rooms = Room.objects.all()
     timeslots = TimeSlot.objects.all()
+    students = Student.objects.all()
+    enrollments = Enrollment.objects.all()
 
     # Initialize the Scheduler Agent
     scheduler = SchedulerAgent(schedules)
@@ -34,9 +37,15 @@ def admin_dashboard(request):
     resource_agent = ResourceAllocationAgent(courses, rooms, schedules)
     allocations = resource_agent.assign_rooms()
 
+    risk_agent = RiskDetectorAgent(students, enrollments, schedules)
+    risks = risk_agent.detect_risks()
+    recommendations = risk_agent.recommendations()
+
     # Send conflicts to template
     return render(request, 'admin.html', {
         'conflicts': conflicts,
         'allocations': allocations,
-        'generated_schedule': generated_schedule
+        'generated_schedule': generated_schedule,
+        'risks': risks,
+        'recommendations': recommendations
     })

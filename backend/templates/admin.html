@@ -133,6 +133,36 @@ margin:10px 0;
     </div>
 {% endif %}
 
+<!-- ADD RISK ALERTS -->
+<h4>Risk Alerts</h4>
+
+{% if risks %}
+    {% for risk in risks %}
+        <div class="alert">
+            ⚠ {{ risk }}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert">
+        No risks detected
+    </div>
+{% endif %}
+
+<!-- ADD RECOMMENDATIONS HERE -->
+<h4>Recommendations</h4>
+
+{% if recommendations %}
+    {% for rec in recommendations %}
+        <div class="alert">
+            💡 {{ rec }}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert">
+        No recommendations available
+    </div>
+{% endif %}
+
 <div class="alert">
 💡 Advisor Agent: Suggest opening new section for CSE327.
 </div>
