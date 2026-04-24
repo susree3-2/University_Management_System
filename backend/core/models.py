@@ -34,3 +34,20 @@ class Schedule(models.Model):
 
     def __str__(self):
         return f"{self.course} - {self.room} - {self.timeslot}"
+    
+
+# NEW: Student model
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+# NEW: Enrollment model (connects student + course)
+class Enrollment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.student} - {self.course}"
