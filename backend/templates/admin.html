@@ -90,9 +90,20 @@ margin:10px 0;
 🏫 Resource Agent: Room B203 allocated.
 </div>
 
-<div class="alert">
-⚠ Risk Agent: Schedule conflict detected.
-</div>
+<!--  DYNAMIC CONFLICTS FROM AI AGENT -->
+<h4>Detected Conflicts</h4>
+
+{% if conflicts %}
+    {% for conflict in conflicts %}
+        <div class="alert">
+            ⚠ {{ conflict }}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert">
+        ✅ No conflicts found
+    </div>
+{% endif %}
 
 <div class="alert">
 💡 Advisor Agent: Suggest opening new section for CSE327.

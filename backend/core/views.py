@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Course
+from .models import Course, Schedule
+from .agents.scheduler import SchedulerAgent   # import the agent
 
 def index(request):
     return render(request, 'index.html')
@@ -12,4 +13,16 @@ def faculty(request):
     return render(request, 'faculty.html')
 
 def admin_dashboard(request):
-    return render(request, 'admin.html')
+    # Get all schedules from database
+    schedules = Schedule.objects.all()
+
+    # Initialize the Scheduler Agent
+    agent = SchedulerAgent(schedules)
+
+    # Detect conflicts
+    conflicts = agent.detect_conflicts()
+
+    # Send conflicts to template
+    return render(request, 'admin.html', {
+        'conflicts': conflicts
+    })
