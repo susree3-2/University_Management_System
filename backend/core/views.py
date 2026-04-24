@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Course, Schedule
 from .agents.scheduler import SchedulerAgent   # import the agent
+from .agents.resource_agent import ResourceAllocationAgent
+from .models import Room
 
 def index(request):
     return render(request, 'index.html')
@@ -15,6 +17,8 @@ def faculty(request):
 def admin_dashboard(request):
     # Get all schedules from database
     schedules = Schedule.objects.all()
+    courses = Course.objects.all()
+    rooms = Room.objects.all()
 
     # Initialize the Scheduler Agent
     agent = SchedulerAgent(schedules)
@@ -22,7 +26,12 @@ def admin_dashboard(request):
     # Detect conflicts
     conflicts = agent.detect_conflicts()
 
+    # Resource Allocation Agent
+    resource_agent = ResourceAllocationAgent(courses, rooms, schedules)
+    allocations = resource_agent.assign_rooms()
+
     # Send conflicts to template
     return render(request, 'admin.html', {
-        'conflicts': conflicts
+        'conflicts': conflicts,
+        'allocations': allocations
     })

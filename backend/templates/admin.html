@@ -105,6 +105,20 @@ margin:10px 0;
     </div>
 {% endif %}
 
+<h4>Room Allocation Suggestions</h4>
+
+{% if allocations %}
+    {% for alloc in allocations %}
+        <div class="alert">
+            🏫 {{ alloc }}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert">
+        No allocation suggestions available
+    </div>
+{% endif %}
+
 <div class="alert">
 💡 Advisor Agent: Suggest opening new section for CSE327.
 </div>
