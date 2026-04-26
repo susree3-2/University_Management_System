@@ -16,14 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import index, student, faculty, admin_dashboard 
+from core.views import index, student, faculty, admin_dashboard, add_course, allocate_classroom,add_room, add_timeslot, create_schedule, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('student/', student),
     path('faculty/', faculty),
-    path('admin-dashboard/', admin_dashboard), 
+    path('admin-dashboard/', admin_dashboard),
+    path('add-course/', add_course, name='add_course'), 
+    path('allocate-classroom/', allocate_classroom, name='allocate_classroom'),
+    path('add-room/', add_room, name='add_room'),
+    path('add-timeslot/', add_timeslot, name='add_timeslot'),
+    path('create-schedule/', create_schedule, name='create_schedule'),
+    path('logout/', logout_view, name='logout'),
 ]
 
 from django.conf import settings

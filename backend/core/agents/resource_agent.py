@@ -53,6 +53,10 @@ class ResourceAllocationAgent:
                         if not best_room or room.capacity < best_room.capacity:
                             best_room = room
             if best_room:
+                #  UPDATE DATABASE
+                schedule.room = best_room
+                schedule.save()
+
                 allocations.append(
                 f"{course.name} → {best_room.name} at {timeslot}"
             )

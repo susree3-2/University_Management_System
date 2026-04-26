@@ -59,50 +59,115 @@ margin:10px 0;
 
 <div class="menu">
 <h3>Menu</h3>
-<a href="#">Add Course</a>
-<a href="#">Allocate Classroom</a>
-<a href="#">View Conflicts</a>
-<a href="#">System Reports</a>
-<a href="#">Logout</a>
+<a href="/admin-dashboard/?action=add_course">Add Course</a>
+<a href="/allocate-classroom/">Allocate Classroom</a>
+<a href="/admin-dashboard/?action=add_room">Add Room</a>
+<a href="/admin-dashboard/?action=add_timeslot">Add TimeSlot</a>
+<a href="/admin-dashboard/?action=create_schedule">Create Schedule</a>
+<a href="/logout/">Logout</a>
 </div>
 
 <div class="content">
 
+{% if action == "add_course" %}
+
+<h3>Add Course</h3>
+
+<form method="POST" action="/add-course/">
+    {% csrf_token %}
+    
+    <input type="text" name="name" placeholder="Course Name" required><br><br>
+    
+    <input type="number" name="students" placeholder="Number of Students" required><br><br>
+    
+    <button type="submit">Add Course</button>
+</form>
+{% elif action == "add_room" %}
+
+<h3>Add Room</h3>
+
+<form method="POST" action="/add-room/">
+    {% csrf_token %}
+    
+    <input type="text" name="name" placeholder="Room Name" required><br><br>
+    
+    <input type="number" name="capacity" placeholder="Capacity" required><br><br>
+    
+    <button type="submit">Add Room</button>
+</form>
+
+{% elif action == "add_timeslot" %}
+
+<h3>Add TimeSlot</h3>
+
+<form method="POST" action="/add-timeslot/">
+    {% csrf_token %}
+    
+    <input type="text" name="day" placeholder="Day (e.g. Monday)" required><br><br>
+    
+    <input type="time" name="start_time" required><br><br>
+    
+    <input type="time" name="end_time" required><br><br>
+    
+    <button type="submit">Add TimeSlot</button>
+</form>
+
+{% elif action == "create_schedule" %}
+
+<h3>Create Schedule</h3>
+
+<form method="POST" action="/create-schedule/">
+    {% csrf_token %}
+
+    <label>Course:</label><br>
+    <select name="course_id" required>
+        {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>TimeSlot:</label><br>
+    <select name="timeslot_id" required>
+        {% for t in timeslots %}
+            <option value="{{ t.id }}">{{ t }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Create Schedule</button>
+</form>
+
+{% else %}
+
 <h3>System Overview</h3>
 
 <ul>
-<li>Total Students: 1200</li>
-<li>Total Courses: 85</li>
-<li>Active Classrooms: 40</li>
+<li>Total Students: {{ students|length }}</li>
+<li>Total Courses: {{ generated_schedule|length }}</li>
+<li>Active Classrooms: {{ allocations|length }}</li>
 </ul>
 
-<h3>Generated Schedule</h3>
+{% endif %}
 
-{% if generated_schedule %}
-    {% for item in generated_schedule %}
+<h3>Room Allocation Results</h3>
+
+{% if allocations %}
+    {% for alloc in allocations %}
         <div class="alert">
-            📅 {{ item }}
+            🏫 {{ alloc }}
         </div>
     {% endfor %}
 {% else %}
     <div class="alert">
-        No schedule generated
+        No allocation results available
     </div>
 {% endif %}
+
 
 </div>
 
 <div class="notifications">
 
 <h3>Agent Activity</h3>
-
-<div class="alert">
-🤖 Scheduler Agent: Exam schedule generated.
-</div>
-
-<div class="alert">
-🏫 Resource Agent: Room B203 allocated.
-</div>
 
 <!--  DYNAMIC CONFLICTS FROM AI AGENT -->
 <h4>Detected Conflicts</h4>
@@ -119,19 +184,7 @@ margin:10px 0;
     </div>
 {% endif %}
 
-<h4>Room Allocation Suggestions</h4>
 
-{% if allocations %}
-    {% for alloc in allocations %}
-        <div class="alert">
-            🏫 {{ alloc }}
-        </div>
-    {% endfor %}
-{% else %}
-    <div class="alert">
-        No allocation suggestions available
-    </div>
-{% endif %}
 
 <!-- ADD RISK ALERTS -->
 <h4>Risk Alerts</h4>
@@ -163,9 +216,19 @@ margin:10px 0;
     </div>
 {% endif %}
 
-<div class="alert">
-💡 Advisor Agent: Suggest opening new section for CSE327.
-</div>
+<h4>Advisor Suggestions</h4>
+
+{% if advice %}
+    {% for item in advice %}
+        <div class="alert">
+            💡 {{ item }}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert">
+        No suggestions available
+    </div>
+{% endif %}
 
 </div>
 

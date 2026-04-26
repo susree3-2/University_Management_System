@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .models import Course, Room, Schedule, TimeSlot,Student, Enrollment
-from .agents.scheduler import SchedulerAgent                     # import the agent
+from .agents.scheduler import SchedulerAgent                        # import the agent
 from .agents.resource_agent import ResourceAllocationAgent
 from .agents.risk_agent import RiskDetectorAgent
+from .agents.advisor_agent import AdvisorAgent
+from django.shortcuts import redirect
 
 
 def index(request):
@@ -16,6 +18,7 @@ def faculty(request):
     return render(request, 'faculty.html')
 
 def admin_dashboard(request):
+    action = request.GET.get('action')
     # Get all schedules from database
     schedules = Schedule.objects.all()
     courses = Course.objects.all()
@@ -30,22 +33,99 @@ def admin_dashboard(request):
     # Detect conflicts
     conflicts = scheduler.detect_conflicts()
 
-    #  generate schedule
-    generated_schedule = scheduler.generate_schedule(courses, rooms, timeslots)
+    
 
     # Resource Allocation Agent
-    resource_agent = ResourceAllocationAgent(courses, rooms, schedules)
-    allocations = resource_agent.assign_rooms()
+    allocations = request.session.pop('allocations', [])
 
     risk_agent = RiskDetectorAgent(students, enrollments, schedules)
     risks = risk_agent.detect_risks()
     recommendations = risk_agent.recommendations()
 
+    advisor = AdvisorAgent(conflicts, allocations, risks)
+    advice = advisor.generate_advice()
+
     # Send conflicts to template
     return render(request, 'admin.html', {
+        'action': action,
         'conflicts': conflicts,
         'allocations': allocations,
-        'generated_schedule': generated_schedule,
         'risks': risks,
-        'recommendations': recommendations
+        'recommendations': recommendations,
+        'advice': advice,
+        'rooms': rooms,
+        'courses': courses, 
+        'timeslots': timeslots 
     })
+
+def add_course(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        students = request.POST.get('students')
+
+        if name and students:
+            Course.objects.create(
+                name=name,
+                students=int(students)
+            )
+
+    return redirect('/admin-dashboard/')
+
+def allocate_classroom(request):
+    schedules = Schedule.objects.all()
+    rooms = Room.objects.all()
+    courses = Course.objects.all()
+
+    agent = ResourceAllocationAgent(courses, rooms, schedules)
+    allocations = agent.assign_rooms()
+
+    # STORE results in session
+    request.session['allocations'] = allocations
+
+    return redirect('/admin-dashboard/')
+
+def add_room(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        capacity = request.POST.get('capacity')
+
+        Room.objects.create(
+            name=name,
+            capacity=capacity
+        )
+
+    return redirect('/admin-dashboard/')
+
+def add_timeslot(request):
+    if request.method == 'POST':
+        day = request.POST.get('day')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+
+        TimeSlot.objects.create(
+            day=day,
+            start_time=start_time,
+            end_time=end_time
+        )
+
+    return redirect('/admin-dashboard/')
+
+def create_schedule(request):
+    if request.method == "POST":
+        course_id = request.POST.get('course_id')
+        timeslot_id = request.POST.get('timeslot_id')
+
+        course = Course.objects.get(id=course_id)
+        timeslot = TimeSlot.objects.get(id=timeslot_id)
+
+        # Create schedule WITHOUT room (AI will assign later)
+        Schedule.objects.create(
+            course=course,
+            timeslot=timeslot,
+            room=Room.objects.first()  # temporary room (will be fixed by AI)
+        )
+
+    return redirect('/admin-dashboard/')
+
+def logout_view(request):
+    return redirect('/')
