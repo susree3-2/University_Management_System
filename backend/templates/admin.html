@@ -64,7 +64,7 @@ margin:10px 0;
 <a href="/admin-dashboard/?action=add_room">Add Room</a>
 <a href="/admin-dashboard/?action=add_timeslot">Add TimeSlot</a>
 <a href="/admin-dashboard/?action=create_schedule">Create Schedule</a>
-<a href="/logout/">Logout</a>
+<a href="/accounts/logout/">Logout</a>
 </div>
 
 <div class="content">
@@ -142,8 +142,8 @@ margin:10px 0;
 
 <ul>
 <li>Total Students: {{ students|length }}</li>
-<li>Total Courses: {{ generated_schedule|length }}</li>
-<li>Active Classrooms: {{ allocations|length }}</li>
+<li>Total Courses: {{ courses_count }}</li>
+<li>Active Classrooms: {{ rooms|length }}</li>
 </ul>
 
 {% endif %}

@@ -5,6 +5,9 @@ from .agents.resource_agent import ResourceAllocationAgent
 from .agents.risk_agent import RiskDetectorAgent
 from .agents.advisor_agent import AdvisorAgent
 from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.http import HttpResponse
+from allauth.socialaccount.models import SocialAccount
 
 
 def index(request):
@@ -18,6 +21,19 @@ def faculty(request):
     return render(request, 'faculty.html')
 
 def admin_dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    social_account = SocialAccount.objects.filter(user=request.user).first()
+    if not social_account:
+        return HttpResponse("Access Denied")
+    user_email = social_account.extra_data.get('email')
+
+    ALLOWED_ADMINS = [
+        "sumaiyasusree@gmail.com"
+    ]
+    if user_email not in ALLOWED_ADMINS:
+        return HttpResponse("Access Denied")
+    
     action = request.GET.get('action')
     # Get all schedules from database
     schedules = Schedule.objects.all()
@@ -31,9 +47,7 @@ def admin_dashboard(request):
     scheduler = SchedulerAgent(schedules)
 
     # Detect conflicts
-    conflicts = scheduler.detect_conflicts()
-
-    
+    conflicts = scheduler.detect_conflicts()  
 
     # Resource Allocation Agent
     allocations = request.session.pop('allocations', [])
@@ -55,7 +69,9 @@ def admin_dashboard(request):
         'advice': advice,
         'rooms': rooms,
         'courses': courses, 
-        'timeslots': timeslots 
+        'timeslots': timeslots, 
+        'students': students,
+        'courses_count': courses.count()
     })
 
 def add_course(request):
@@ -127,5 +143,3 @@ def create_schedule(request):
 
     return redirect('/admin-dashboard/')
 
-def logout_view(request):
-    return redirect('/')
