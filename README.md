@@ -1,6 +1,7 @@
 #  University Management System with Autonomous AI Agents
 
 ##  Demo Access
+- Admin Login (Google OAuth): /
 - Admin Dashboard: /admin-dashboard/
 - Django Admin Panel: /admin/
 
@@ -13,6 +14,14 @@ The system simulates how intelligent agents can support administrative decision-
 ---
 
 ##  Key Features
+
+### Google Federated Login (OAuth 2.0)
+
+- Secure admin login using Google account
+- Integrated using Django Allauth
+- Eliminates need for manual password management
+
+---
 
 ###  AI Agents
 
@@ -74,20 +83,21 @@ The system includes four intelligent agents:
 * Backend: Django (Python)
 * Database: SQLite (default Django DB)
 * Frontend: HTML, CSS
+* Authentication: Google OAuth 2.0 (Django Allauth)
 * AI Logic: Rule-based intelligent agents
 
 ---
 
 ##  System Workflow
 
-1. Admin creates courses, rooms, and schedules
-2. AI agents analyze the system:
-
-   * Detect conflicts
-   * Allocate resources
-   * Identify risks
-3. Advisor agent suggests improvements
-4. Admin takes action based on recommendations
+1. Admin logs in using Google account
+2. Admin creates courses, rooms, and schedules
+3. AI agents automatically:
+   - Detect conflicts
+   - Allocate classrooms
+   - Identify risks
+4. Advisor Agent generates recommendations
+5. Admin takes action based on system insights
 
 ---
 
@@ -101,18 +111,30 @@ This project demonstrates how **AI-driven agents** can:
 
 ---
 
+## Unit Testing
+
+Unit testing has been implemented for the **Scheduler Agent** to verify the correctness of conflict detection logic.
+
+### Test Cases Covered:
+- Room conflict detection (same room, same timeslot)  
+- Course conflict detection (same course, same timeslot)  
+- No-conflict scenario validation  
+
+### How to Run Tests:
+```bash
+python manage.py test
+
 ##  Note
 
-* Authentication is simplified for demonstration purposes
+
 * Student and faculty dashboards are minimal and used for system representation
 
 ---
 
 ##  Future Improvements
 
-* Google Federated Login (OAuth 2.0)
 * Fully automated scheduling system
-* Role-based authentication system
+*  Advanced role-based access control (Admin/Faculty/Student)
 * Real-time notifications
 
 ---
